@@ -5,6 +5,7 @@ const express = require('express')
 const app = express()
 
 const mongoose = require('mongoose')
+const currentUser = require('./src/middleware/currentuser')
 
 mongoose.connection.once('open', ()=>{
     console.log('Connected to Database')    
@@ -14,7 +15,7 @@ mongoose.connect(process.env.DATABASE_URL)
 .then((db)=>{
 
     app.use(express.json())
-
+    app.use(currentUser())
     app.use('/api', require('./routes'));    
 
     app.listen(5000, ()=>{

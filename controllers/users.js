@@ -1,6 +1,6 @@
 const User = require("../models").User;
 const Project = require("../models").Project;
-
+var ObjectId = require('mongoose').Types.ObjectId;
 
 const getAllUsers = async (req, res)=> {
 
@@ -8,7 +8,7 @@ const getAllUsers = async (req, res)=> {
 
         const users = await User.find();
 
-        res.json({users});
+        return res.json({users});
 
     } catch (error) {
         return res.status(500).send({message:error.message});
@@ -76,32 +76,28 @@ const deleteUser = async (req, res)=> {
 
 const addProject = async (req, res)=>{
 
-    const userId = req.params.id;
-
-    const project = new Project({
-        title:req.body.title,
-        imageUrl:req.body.imageUrl,
-        description:req.body.description        
-    })
-
     try {
 
-        Project.create(project)
-        .then(async (newProject)=>{
+        const userId = req.params.id;
 
-            const result = await User.findByIdAndUpdate(
-                userId,
-                { $push: { projects:newProject._id }},
-                {
-                    new:true
-                }
-            );
+        const newProject = new Project({
+            title:req.body.title,
+            imageUrl:req.body.imageUrl,
+            description:req.body.description        
+        })
+    
+        const user = await User.findById(req.params.id);
 
-            return res.status(201).json(result);
-        })
-        .catch((error)=>{
-            return res.status(400).send({message:error.message});
-        })
+        if (user) {
+
+            newProject.owner = user._id;
+            
+            const project = await newProject.save();
+        
+            return res.status(201).json({project});
+        }
+
+        return res.status(404).json({message:'User not found'})        
 
     } catch (error) {
         return res.status(500).send({message:error.message});
@@ -127,10 +123,30 @@ const addProject = async (req, res)=>{
 //     next();
 // }
 
+const getUserProjects = async (req, res) => {
+
+    try {
+
+        const projects = await Project.find(
+            {owner:{$eq:new ObjectId(req.params.id)}}
+        ).populate('owner')
+
+        if (projects) {
+            return res.json({projects})
+        }
+        
+        return res.status(404).json({message:'User not found'})
+
+    } catch (error) {
+        return res.status(500).send({message:error.message});
+    }
+}
+
 module.exports = {
     getAllUsers,
     createUser,
     getUserById,
     deleteUser,
-    addProject
+    addProject,
+    getUserProjects
 }

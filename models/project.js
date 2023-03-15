@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Task = require('./task');
 
 const projectSchema = new mongoose.Schema({
     title:{
@@ -12,7 +13,13 @@ const projectSchema = new mongoose.Schema({
     description:{
         type:String,
         required:true    
-    }
+    },
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"     
+    },
+    tasks:[Task.schema]
+
 })
 
 module.exports = mongoose.model('Project', projectSchema);
