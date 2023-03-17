@@ -1,10 +1,18 @@
 const { Router } = require('express');
 const controller = require('../controllers').users;
+const hasPermission = require('../src/middleware/authorized')
 
 const router = Router();
 
-router.get('/', controller.getAllUsers);
-router.post('/', controller.createUser);
+// RBAC - Role Based Access Control
+
+// 'user.CREATE'
+// 'user.RETRIEVE'
+// 'user.UPDATE'
+// 'user.DELETE'
+
+router.get('/',     hasPermission(['permission.ALL', 'user.RETRIEVE']), controller.getAllUsers);
+router.post('/',    hasPermission(['user.CREATE']), controller.createUser);
 router.get('/:id', controller.getUserById);
 router.delete('/:id', controller.deleteUser);
 

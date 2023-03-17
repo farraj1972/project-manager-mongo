@@ -20,7 +20,8 @@ module.exports = ()=>{
         
                 if (user) {
                     res.currentUser = {
-                        id:user.id
+                        id:user.id,
+                        profiles:user.profiles
                     }
                 }
             }    
