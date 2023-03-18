@@ -12,11 +12,11 @@ const router = Router();
 // 'user.DELETE'
 
 router.get('/',     hasPermission(['permission.ALL', 'user.RETRIEVE']), controller.getAllUsers);
-router.post('/',    hasPermission(['user.CREATE']), controller.createUser);
+router.post('/',    hasPermission(['permission.ALL', 'user.CREATE']), controller.createUser);
 router.get('/:id', controller.getUserById);
 router.delete('/:id', controller.deleteUser);
 
-router.post('/:id/projects', controller.addProject);
+router.post('/:id/projects',  hasPermission(['permission.ALL']), controller.addProject);
 router.get('/:id/projects', controller.getUserProjects);
 
 // router.get('/', (req, res)=>{

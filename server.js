@@ -20,6 +20,14 @@ mongoose.connect(process.env.DATABASE_URL)
     app.use(currentUser())
     app.use(permissions())
 
+    // app.get('^/teste/:param(xpto[0-9]{2})', (req, res)=>{
+    //     res.send(req.params.param)
+    // })
+
+    // app.get(/^/, (req, res)=>{
+    //     res.send(req.params.param)
+    // })    
+
     app.use('/api', require('./routes'));    
 
     app.listen(5000, ()=>{

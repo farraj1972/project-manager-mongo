@@ -6,7 +6,7 @@ const getAllUsers = async (req, res)=> {
 
     try {
 
-        const users = await User.find();
+        const users = await User.find().select({password:0});
 
         return res.json({users});
 

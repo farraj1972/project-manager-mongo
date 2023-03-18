@@ -10,18 +10,19 @@ const taskSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    startDate:{
-        type:Date,
-//        required:true,
-        default:Date.now
-    },
-    deadline:{
-        type:Date,
-        required:true
-    },
-    endDate:{
-        type:Date
-    },   
+//    ,
+//     startDate:{
+//         type:Date,
+// //        required:true,
+//         default:Date.now
+//     },
+//     deadline:{
+//         type:Date,
+//         required:true
+//     },
+//     endDate:{
+//         type:Date
+//     },   
     members:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
