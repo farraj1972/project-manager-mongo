@@ -27,7 +27,8 @@ router.post('/register', async (req, res)=>{
                 lastName:req.body.lastName,
                 email:req.body.email,
                 password:hash,
-                profiles:['TEAM_MEMBER']
+                profiles:['TEAM_MEMBER'],
+                status:'ACTIVE'
             });
             return res.status(201).json({newUser});
         }

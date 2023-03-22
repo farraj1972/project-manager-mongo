@@ -1,5 +1,5 @@
 require('dotenv').config()
-
+const cors = require('cors');
 
 const express = require('express')
 const app = express()
@@ -16,6 +16,9 @@ mongoose.connection.once('open', ()=>{
 mongoose.connect(process.env.DATABASE_URL)
 .then((db)=>{
 
+    app.use(cors({
+        origin: '*'
+    }));
     app.use(express.json())
     app.use(currentUser())
     app.use(permissions())

@@ -21,7 +21,18 @@ const projectSchema = new mongoose.Schema({
     tasks:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Task"     
-    }]
+    }],
+    activityLog: [
+        {
+            description: {
+                type: String,
+            },
+            timestamp: {
+                type: Date,
+                default:Date.now
+            },
+        },
+    ]
     // ,
     // tasks:[Task.schema]
 

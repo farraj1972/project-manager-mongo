@@ -17,13 +17,13 @@ module.exports = ()=>{
         
                 //const user = await User.findOne({where:{id:decoded.id}});
                 const user = await User.findById(decoded.id);
-        
-                if (user) {
-                    res.currentUser = {
-                        id:user.id,
-                        profiles:user.profiles
+//                if (user.status !== 'ACTIVE')
+                    if (user) {
+                        res.currentUser = {
+                            id:user.id,
+                            profiles:user.profiles
+                        }
                     }
-                }
             }    
 
         } catch(error) {

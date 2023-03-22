@@ -23,7 +23,10 @@ const createProject = async (req, res)=>{
         const newProject = new Project({
             title:req.body.title,
             imageUrl:req.body.imageUrl,
-            description:req.body.description        
+            description:req.body.description,
+            activityLog:[{
+                
+            }]        
         })
     
         newProject.owner = res.currentUser.id;

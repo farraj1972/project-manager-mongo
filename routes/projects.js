@@ -7,7 +7,10 @@ const router = Router();
 router.get('/',   hasPermission(['project.RETRIEVE']),  controller.getAllProjects);
 router.post('/',  hasPermission(['project.CREATE']),    controller.createProject);
 router.post('/:id/tasks', controller.addTask);
+//router.post('/:id/activities', controller.addActivityRecord);
+//router.get('/:id/activities', controller.getActivityRecords);
 
+//router.patch('/:id', controller.addActivityRecord);
 
 //POST /api/projects
 

@@ -19,6 +19,7 @@ router.delete('/:id', controller.deleteUser);
 router.post('/:id/projects',  hasPermission(['permission.ALL']), controller.addProject);
 router.get('/:id/projects', controller.getUserProjects);
 
+router.put('/:id', controller.updateUser);
 // router.get('/', (req, res)=>{
 //     console.log('/api/users/')
 //     res.send('/api/users/')

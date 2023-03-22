@@ -4,11 +4,22 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 const getAllUsers = async (req, res)=> {
 
+    const {page = 1, limit= 10} = req.query; 
+    
     try {
 
-        const users = await User.find().select({password:0});
+        const users = await User.find().select({password:0}).
+        limit(limit * 1).
+        skip((page - 1) * limit).
+        exec();
 
-        return res.json({users});
+        const count = await User.count();
+
+        return res.json({
+            users,
+            totalPages: Math.ceil(count/limit),
+            currentPage:page
+        });
 
     } catch (error) {
         return res.status(500).send({message:error.message});
@@ -62,6 +73,38 @@ const deleteUser = async (req, res)=> {
             user.deleteOne();
             
             return res.json({message:'Deleted'});
+        }
+
+        return res.status(404).json({message:'Cannot find user'})        
+        //await User.deleteOne({req.params.id);
+        // const users = await User.find();
+        // res.json({users});
+
+    } catch (error) {
+        return res.status(500).send({message:error.message});
+    }
+}
+
+const updateUser = async (req, res)=> {
+
+    try {
+
+        let user = await User.findById(req.params.id);
+        
+        if (user) {
+            
+            if (req.body.firstName)
+                user.firstName = req.body.firstName
+            if (req.body.lastName)
+                user.lastName = req.body.lastName
+            if (req.body.status)
+                user.status = req.body.status
+            if (req.body.profiles)
+                user.profiles = req.body.profiles
+
+            user.save()
+            
+            return res.json({message:'User updated'});
         }
 
         return res.status(404).json({message:'Cannot find user'})        
@@ -148,5 +191,6 @@ module.exports = {
     getUserById,
     deleteUser,
     addProject,
-    getUserProjects
+    getUserProjects,
+    updateUser
 }
